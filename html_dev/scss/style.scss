@@ -1,0 +1,39 @@
+body
+{
+    background-color: snow;
+}
+
+.grid-container
+{
+  width: 90%;
+  height: 100%;
+  margin: auto;
+}
+
+.grid-row
+{
+  width: 100%;
+  height: auto;
+}
+
+.grid-cell
+{
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+  background-color: darkgrey;
+  margin: 2px;
+
+  line-height: 25px;
+  text-align: center;
+}
+
+.grid-cell-color
+{
+  background-color: yellow;
+}
+
+.grid-cell-debug
+{
+  background-color: red;
+}
