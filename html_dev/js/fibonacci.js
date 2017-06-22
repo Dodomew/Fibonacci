@@ -18,8 +18,13 @@ window.onload = function()
 {
   var gridContainer = document.getElementById("grid-container");
   gridContainer.addEventListener('click', whichCellWasClickedAndProcessIt, false);
-  var numberOfRows = 20;
+
+  var resetButton = document.getElementById("header-button-reset");
+  resetButton.addEventListener('click', resetGrid, false);
+
+  var numberOfRows = 50;
   var numberOfColumns = 50;
+  var fibonacciSequence = fibonacciGenerator(numberOfColumns);
   var gridArray = [];
 
   class Cell
@@ -35,14 +40,20 @@ window.onload = function()
 
       this.number = 0;
 
-      this.positionInArray = [rowNumber][columnNumber];
-
       row.appendChild(this.divContainer);
+    }
+
+    addOneToNumber()
+    {
+      this.number++;
+      this.divContainer.innerHTML = this.number;
     }
   }
 
   function createGridOfTiles()
   {
+    gridContainer.innerHTML = "";
+
     for (let i = 0; i < numberOfRows; i++)
     {
       let rowArray = [];
@@ -86,13 +97,132 @@ window.onload = function()
     for (let i = 0; i < numberOfRows; i++)
     {
       let cell = gridArray[i][columnNumber];
-      cell.divContainer.classList.add("grid-cell-color");
+
+      if(cell != gridArray[rowNumber][columnNumber])
+      {
+        addYellowColorToCell(cell);
+        cell.addOneToNumber();
+        removeYellowColorFromCell(cell);
+      }
     }
 
     for (let j = 0; j < numberOfColumns; j++)
     {
       let cell = gridArray[rowNumber][j];
-      cell.divContainer.classList.add("grid-cell-color");
+
+      addYellowColorToCell(cell);
+      cell.addOneToNumber();
+      removeYellowColorFromCell(cell);
     }
+
+    gridSequences();
+  }
+
+  function fibonacciGenerator(fibonacciNumber)
+  {
+    let arrayOfFibonacci = [1, 1];
+
+    //i = 2 want arrayOfFibonacci heeft 1 en 1 al, hierdoor skipt ie het getal 0 in de reeks
+    for (let i = 2; i <= fibonacciNumber; i++)
+    {
+      var sumOfFibonacciNumbers = arrayOfFibonacci[i - 2] + arrayOfFibonacci[i - 1];
+      arrayOfFibonacci.push(sumOfFibonacciNumbers);
+    }
+    return arrayOfFibonacci;
+  }
+
+  function gridSequences()
+  {
+    for (let i = 0; i < numberOfRows; i++)
+    {
+      for (let j = 0; j < numberOfColumns - 5; j++)
+      {
+        let gridSequence = [];
+
+        let firstFibonacci = gridArray[i][j];
+        let secondFibonacci = gridArray[i][j + 1];
+        let thirdFibonacci = gridArray[i][j + 2];
+        let fourthFibonacci = gridArray[i][j + 3];
+        let fifthFibonacci = gridArray[i][j + 4];
+
+        gridSequence.push(firstFibonacci, secondFibonacci, thirdFibonacci, fourthFibonacci, fifthFibonacci);
+        findFibonacciSequences(gridSequence);
+      }
+    }
+  }
+
+  function findFibonacciSequences(gridSequence)
+  {
+    for (let i = 0; i < fibonacciSequence.length; i++)
+    {
+      let fibonacciCache = []
+
+      let firstFibonacciNumber = fibonacciSequence[i];
+      let secondFibonacciNumber = fibonacciSequence[i + 1];
+      let thirdFibonacciNumber = fibonacciSequence[i + 2];
+      let fourthFibonacciNumber = fibonacciSequence[i + 3];
+      let fifthFibonacciNumber = fibonacciSequence[i + 4];
+
+      fibonacciCache.push(firstFibonacciNumber, secondFibonacciNumber, thirdFibonacciNumber, fourthFibonacciNumber, fifthFibonacciNumber);
+
+      if(compareTwoArrays(gridSequence, fibonacciCache) === true)
+      {
+        removeFibonacciSequencesFromGrid(gridSequence);
+        return;
+      }
+    }
+  }
+
+  function compareTwoArrays(arrayOfObjects, arrayToBeCompared)
+  {
+    let arrayToCompareTo = [];
+
+    for (let i = 0; i < arrayOfObjects.length; i++)
+    {
+      let number = arrayOfObjects[i].number;
+      arrayToCompareTo.push(number);
+    }
+
+    if(arrayToCompareTo.length != arrayToBeCompared.length)
+    {
+      return false;
+    }
+    return arrayToCompareTo.join() === arrayToBeCompared.join();
+  }
+
+  function removeFibonacciSequencesFromGrid(array)
+  {
+    for (let i = 0; i < array.length; i++)
+    {
+      array[i].divContainer.classList.add("cell-fibonacci");
+
+      setTimeout(function ()
+      {
+        array[i].number = 0;
+        array[i].divContainer.classList.remove("cell-fibonacci");
+        array[i].divContainer.innerHTML = "";
+      },
+      1000);
+    }
+  }
+
+  function addYellowColorToCell(cell)
+  {
+    cell.divContainer.classList.add("grid-cell-color");
+  }
+
+  function removeYellowColorFromCell(cell)
+  {
+    setTimeout(function ()
+    {
+      cell.divContainer.classList.remove("grid-cell-color");
+    },
+    1000);
+  }
+
+  function resetGrid()
+  {
+    gridArray = [];
+    createGridOfTiles();
   }
 }

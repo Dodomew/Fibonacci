@@ -1,6 +1,14 @@
 body
 {
-    background-color: snow;
+    font-size: 67.5%;
+    font-family: helvetica, sans-serif;
+
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#744ca5+0,7d3687+100 */
+    background: #744ca5; /* Old browsers */
+    background: -moz-linear-gradient(top, #744ca5 0%, #7d3687 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #744ca5 0%,#7d3687 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #744ca5 0%,#7d3687 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#744ca5', endColorstr='#7d3687',GradientType=0 ); /* IE6-9 */
 }
 
 .grid-container
@@ -8,24 +16,41 @@ body
   width: 90%;
   height: 100%;
   margin: auto;
+  padding: 0.5rem;
+
+  background-color: rgb(50, 50, 50);
+
 }
 
 .grid-row
 {
   width: 100%;
   height: auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
+
 
 .grid-cell
 {
   width: 25px;
   height: 25px;
   display: inline-block;
-  background-color: darkgrey;
+  background-color: Gainsboro;
   margin: 2px;
 
   line-height: 25px;
   text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+
+  transition: background-color 0.20s linear;
+}
+
+.grid-cell:hover
+{
+  background-color: orange;
 }
 
 .grid-cell-color
@@ -36,4 +61,43 @@ body
 .grid-cell-debug
 {
   background-color: red;
+}
+
+.cell-fibonacci
+{
+  background-color: green;
+}
+
+.header-container
+{
+  width: 90%;
+  margin: auto;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-container h1
+{
+  font-size: 2rem;
+  color: white;
+}
+
+.header-button-reset
+{
+  padding: 1rem;
+
+  font-size: 1.6rem;
+  text-decoration: none;
+
+  background-color: orange;
+  border: none;
+
+  transition: background-color 0.2s linear;
+}
+
+.header-button-reset:hover
+{
+  background-color: gold;
 }
