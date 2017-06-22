@@ -1,0 +1,38 @@
+{
+  "name": "Fibonacci",
+  "version": "1.0.0",
+  "description": "Fibonacci",
+  "main": "GruntFile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dodomew/Fibonacci.git"
+  },
+  "keywords": [
+    "memory",
+    "javascript"
+  ],
+  "author": "Doortje Spanjerberg",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dodomew/Fibonacci/issues"
+  },
+  "homepage": "https://github.com/Dodomew/Fibonacci#readme",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-cssmin": "^1.0.2",
+    "grunt-contrib-htmlmin": "^2.0.0",
+    "grunt-contrib-sass": "^1.0.0",
+    "grunt-contrib-uglify": "^2.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-sync": "^0.6.2"
+  },
+  "dependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-sass": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-sync": "^0.6.2"
+  }
+}
