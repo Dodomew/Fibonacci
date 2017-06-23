@@ -24,8 +24,9 @@ window.onload = function()
 
   var numberOfRows = 50;
   var numberOfColumns = 50;
-  var fibonacciSequence = fibonacciGenerator(numberOfColumns);
+  //var fibonacciSequence = fibonacciGenerator(50);
   var gridArray = [];
+  var dynamicFibonacciSequence = [1, 1];
 
   class Cell
   {
@@ -58,6 +59,24 @@ window.onload = function()
     removeYellowColor()
     {
       this.divContainer.classList.remove("grid-cell-color");
+    }
+  }
+
+  function dynamicFibonacciGenerator(array)
+  {
+    let lastIndex = array[array.length - 1];
+    let secondLastIndex = array[array.length - 2];
+
+    let newFibonacciNumber = lastIndex + secondLastIndex;
+    array.push(newFibonacciNumber);
+  }
+
+  function runFibGen(cellToCheck)
+  {
+    while(cellToCheck.number > dynamicFibonacciSequence[dynamicFibonacciSequence.length - 1])
+    {
+      dynamicFibonacciGenerator(dynamicFibonacciSequence);
+      console.log(dynamicFibonacciSequence);
     }
   }
 
@@ -94,19 +113,6 @@ window.onload = function()
     let cell = findCellPositionInArray(clickedCell);
 
     addOneToConnectedCells(cell[0], cell[1]);
-
-/*
-    for (let i = 0; i < numberOfRows; i++)
-    {
-      for (let j = 0; j < numberOfColumns; j++)
-      {
-        if(clickedCell == gridArray[i][j].cellId)
-        {
-          addOneToConnectedCells(i, j);
-        }
-      }
-    }
-    */
   }
 
   function findCellPositionInArray(cellId)
@@ -129,16 +135,17 @@ window.onload = function()
       let cell = gridArray[i][columnNumber];
 
       if(cell == gridArray[rowNumber][columnNumber])
-        continue;
 
-        cell.addYellowColor();
-        cell.addOneToNumber();
+      continue;
 
-        setTimeout(function toggleColorOn()
-        {
-          cell.removeYellowColor();
-        },
-        500);
+      cell.addYellowColor();
+      cell.addOneToNumber();
+
+      setTimeout(function toggleColorOn()
+      {
+        cell.removeYellowColor();
+      },
+      500);
     }
 
     for (let j = 0; j < numberOfColumns; j++)
@@ -154,7 +161,6 @@ window.onload = function()
       },
       500);
     }
-
     gridSequences();
   }
 
@@ -171,78 +177,54 @@ window.onload = function()
     return arrayOfFibonacci;
   }
 
-
   function gridSequences()
   {
-    for (let i = 0; i < numberOfRows; i++)
+    for (let i = 0; i < numberOfRows - 5; i++)
     {
       for (let j = 0; j < numberOfColumns - 5; j++)
       {
-        let gridSequence = [];
+        let gridSequenceHorizontal = [];
+        let gridSequenceVertical = [];
 
-        let firstFibonacci = gridArray[i][j];
-        let secondFibonacci = gridArray[i][j + 1];
-        let thirdFibonacci = gridArray[i][j + 2];
-        let fourthFibonacci = gridArray[i][j + 3];
-        let fifthFibonacci = gridArray[i][j + 4];
+        let firstNumberHorizontal = gridArray[i][j];
+        let secondNumberHorizontal = gridArray[i][j + 1];
+        let thirdNumberHorizontal = gridArray[i][j + 2];
+        let fourthNumberHorizontal = gridArray[i][j + 3];
+        let fifthNumberHorizontal = gridArray[i][j + 4];
 
-        gridSequence.push(firstFibonacci, secondFibonacci, thirdFibonacci, fourthFibonacci, fifthFibonacci);
-        findFibonacciSequences(gridSequence);
+        let firstNumberVertical = gridArray[i][j];
+        let secondNumberVertical = gridArray[i + 1][j];
+        let thirdNumberVertical = gridArray[i + 2][j];
+        let fourthNumberVertical = gridArray[i + 3][j];
+        let fifthNumberVertical = gridArray[i + 4][j];
+
+        gridSequenceHorizontal.push(firstNumberHorizontal, secondNumberHorizontal, thirdNumberHorizontal, fourthNumberHorizontal, fifthNumberHorizontal);
+        gridSequenceVertical.push(firstNumberVertical, secondNumberVertical, thirdNumberVertical, fourthNumberVertical, fifthNumberVertical);
+
+        findFibonacciSequences(gridSequenceHorizontal);
+        findFibonacciSequences(gridSequenceVertical);
       }
-    }
-  }
-
-  function findHorizontalFibonacci()
-  {
-    for (let j = 0; j < numberOfRows - 5; j++)
-    {
-      let horizontalArray = [];
-      for (let i = 0; i < numberOfColumns; i++)
-      {
-        horizontalArray.push(gridArray[i][j]);
-      }
-
-      for (let j = 0; j < horizontalArray.length; j++)
-      {
-        let fiveConsequentialCells = [];
-
-        let firstArrayNumber = horizontalArray[j];
-        let secondArrayNumber = horizontalArray[j + 1];
-        let thirdArrayNumber = horizontalArray[j + 2];
-        let fourthArrayNumber = horizontalArray[j + 3];
-        let fifthArrayNumber = horizontalArray[j + 4];
-
-        fiveConsequentialCells.push(firstArrayNumber, secondArrayNumber, thirdArrayNumber, fourthArrayNumber, fifthArrayNumber);
-        findFibonacciSequences(fiveConsequentialCells);
-      }
-    }
-  }
-
-  function findVerticalFibonacci()
-  {
-    for (let i = 0; i < numberOfColumns; i++)
-    {
-      let verticalArray = [];
-      for (let j = 0; j < numberOfRows; j++)
-      {
-        verticalArray.push(gridArray[j][i]);
-
-      }
-      findFibonacciSequences(verticalArray);
     }
   }
 
   function findFibonacciSequences(gridSequence)
   {
-    for (let i = 0; i < fibonacciSequence.length; i++)
-    {
-      let fibonacciCache = []
+    let fibonacciCache = [];
 
-      let firstFibonacciNumber = fibonacciSequence[i];
-      let secondFibonacciNumber = fibonacciSequence[i + 1];
-      let thirdFibonacciNumber = fibonacciSequence[i + 2];
-      let fourthFibonacciNumber = fibonacciSequence[i + 3];
-      let fifthFibonacciNumber = fibonacciSequence[i + 4];
+    for (let i = 0; i < gridSequence.length; i++)
+    {
+      runFibGen(gridSequence[i]);
+    }
+
+    for (let i = 0; i < dynamicFibonacciSequence.length; i++)
+    {
+      fibonacciCache = [];
+
+      let firstFibonacciNumber = dynamicFibonacciSequence[i];
+      let secondFibonacciNumber = dynamicFibonacciSequence[i + 1];
+      let thirdFibonacciNumber = dynamicFibonacciSequence[i + 2];
+      let fourthFibonacciNumber = dynamicFibonacciSequence[i + 3];
+      let fifthFibonacciNumber = dynamicFibonacciSequence[i + 4];
 
       fibonacciCache.push(firstFibonacciNumber, secondFibonacciNumber, thirdFibonacciNumber, fourthFibonacciNumber, fifthFibonacciNumber);
 
@@ -276,10 +258,10 @@ window.onload = function()
     for (let i = 0; i < array.length; i++)
     {
       array[i].divContainer.classList.add("cell-fibonacci");
+      array[i].number = 0;
 
       setTimeout(function ()
       {
-        array[i].number = 0;
         array[i].divContainer.classList.remove("cell-fibonacci");
         array[i].divContainer.innerHTML = "";
       },
