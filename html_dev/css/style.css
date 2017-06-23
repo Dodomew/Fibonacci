@@ -25,8 +25,14 @@ body {
 .grid-row {
   width: 100%;
   height: auto;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-around;
   justify-content: space-around;
+  -webkit-align-items: center;
   align-items: center;
 }
 
@@ -40,7 +46,7 @@ body {
   text-align: center;
   font-weight: bold;
   font-size: 1rem;
-  transition: background-color 0.20s linear;
+  transition: background-color 0.2s linear;
 }
 
 .grid-cell:hover {
@@ -62,8 +68,14 @@ body {
 .header-container {
   width: 90%;
   margin: auto;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
+  -webkit-align-items: center;
   align-items: center;
 }
 

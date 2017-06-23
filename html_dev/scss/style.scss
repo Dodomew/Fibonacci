@@ -1,3 +1,22 @@
+// MIXINS
+@mixin displayFlex($justify, $alignItems)
+{
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: $justify;
+  justify-content: $justify;
+  -webkit-align-items: $alignItems;
+  align-items: $alignItems;
+}
+
+// VARIABLES
+$cellWidth : 25px;
+$cellHeight : 25px;
+$animationSpeed : 0.20s;
+
 body
 {
     font-size: 67.5%;
@@ -26,26 +45,25 @@ body
 {
   width: 100%;
   height: auto;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+
+  @include displayFlex(space-around, center);
 }
 
 
 .grid-cell
 {
-  width: 25px;
-  height: 25px;
+  width: $cellWidth;
+  height: $cellHeight;
   display: inline-block;
   background-color: Gainsboro;
   margin: 2px;
 
-  line-height: 25px;
+  line-height: $cellHeight;
   text-align: center;
   font-weight: bold;
   font-size: 1rem;
 
-  transition: background-color 0.20s linear;
+  transition: background-color $animationSpeed linear;
 }
 
 .grid-cell:hover
@@ -73,9 +91,7 @@ body
   width: 90%;
   margin: auto;
 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  @include displayFlex(space-between, center);
 }
 
 .header-container h1
@@ -94,7 +110,7 @@ body
   background-color: orange;
   border: none;
 
-  transition: background-color 0.2s linear;
+  transition: background-color $animationSpeed linear;
 }
 
 .header-button-reset:hover

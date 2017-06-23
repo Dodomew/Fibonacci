@@ -24,7 +24,7 @@ window.onload = function()
 
   var numberOfRows = 50;
   var numberOfColumns = 50;
-  var fibonacciSequence = fibonacciGenerator(numberOfColumns);
+  var fibonacciSequence = fibonacciGenerator(50);
   var gridArray = [];
 
   class Cell
@@ -155,7 +155,9 @@ window.onload = function()
       500);
     }
 
-    gridSequences();
+    //gridSequences();
+    findHorizontalFibonacci();
+    findVerticalFibonacci();
   }
 
   function fibonacciGenerator(fibonacciNumber)
@@ -171,7 +173,21 @@ window.onload = function()
     return arrayOfFibonacci;
   }
 
+  function checkIfArrayIsFibonacci(arrayTocheck)
+  {
+    for (let i = 0; i < arrayTocheck.length; i++)
+    {
+      let firstNumber = arrayTocheck[i].number;
+      let secondNumber = arrayTocheck[i + 1].number;
+      let sum = firstNumber + secondNumber;
 
+      if(arrayTocheck[i + 2].number === sum)
+      {
+        console.log("ok");
+      }
+    }
+  }
+/*
   function gridSequences()
   {
     for (let i = 0; i < numberOfRows; i++)
@@ -191,30 +207,17 @@ window.onload = function()
       }
     }
   }
-
+*/
   function findHorizontalFibonacci()
   {
-    for (let j = 0; j < numberOfRows - 5; j++)
+    for (let j = 0; j < numberOfRows; j++)
     {
       let horizontalArray = [];
       for (let i = 0; i < numberOfColumns; i++)
       {
         horizontalArray.push(gridArray[i][j]);
       }
-
-      for (let j = 0; j < horizontalArray.length; j++)
-      {
-        let fiveConsequentialCells = [];
-
-        let firstArrayNumber = horizontalArray[j];
-        let secondArrayNumber = horizontalArray[j + 1];
-        let thirdArrayNumber = horizontalArray[j + 2];
-        let fourthArrayNumber = horizontalArray[j + 3];
-        let fifthArrayNumber = horizontalArray[j + 4];
-
-        fiveConsequentialCells.push(firstArrayNumber, secondArrayNumber, thirdArrayNumber, fourthArrayNumber, fifthArrayNumber);
-        findFibonacciSequences(fiveConsequentialCells);
-      }
+      getFiveSequentialCells(horizontalArray);
     }
   }
 
@@ -228,10 +231,79 @@ window.onload = function()
         verticalArray.push(gridArray[j][i]);
 
       }
-      findFibonacciSequences(verticalArray);
+      getFiveSequentialCells(verticalArray);
     }
   }
 
+/*
+  function findSequence(array)
+  {
+    for (let i = 0; i < array.length; i++)
+    {
+      let fibonacciCache = []
+
+      let firstArrayNumber = fibonacciSequence[i];
+      let secondArrayNumber = fibonacciSequence[i + 1];
+      let thirdArrayNumber = fibonacciSequence[i + 2];
+      let fourthArrayNumber = fibonacciSequence[i + 3];
+      let fifthArrayNumber = fibonacciSequence[i + 4];
+
+      fibonacciCache.push(firstArrayNumber, secondArrayNumber, thirdArrayNumber, fourthArrayNumber, fifthArrayNumber);
+
+      if(compareTwoArraysForFibonacciSequence(array, fibonacciCache) === true)
+      {
+        removeFibonacciSequencesFromGrid(array);
+        return;
+      }
+    }
+  }
+*/
+  function getFiveSequentialCells(arrayToLoopThrough)
+  {
+    for (let i = 0; i < arrayToLoopThrough.length - 5; i++)
+    {
+      let fiveCells = [];
+
+      let firstArrayNumber = arrayToLoopThrough[i];
+      let secondArrayNumber = arrayToLoopThrough[i + 1];
+      let thirdArrayNumber = arrayToLoopThrough[i + 2];
+      let fourthArrayNumber = arrayToLoopThrough[i + 3];
+      let fifthArrayNumber = arrayToLoopThrough[i + 4];
+
+      fiveCells.push(firstArrayNumber, secondArrayNumber, thirdArrayNumber, fourthArrayNumber, fifthArrayNumber);
+
+      checkArrayForFibonacci(fiveCells);
+    }
+  }
+
+  function checkArrayForFibonacci(arrayToCheckForFibonacci)
+  {
+    for (let i = 0; i < fibonacciSequence.length - 5; i++)
+    {
+      let fiveFibonacciNumbers = [];
+
+      let firstArrayNumber = fibonacciSequence[i];
+      let secondArrayNumber = fibonacciSequence[i + 1];
+      let thirdArrayNumber = fibonacciSequence[i + 2];
+      let fourthArrayNumber = fibonacciSequence[i + 3];
+      let fifthArrayNumber = fibonacciSequence[i + 4];
+
+      fiveFibonacciNumbers.push(firstArrayNumber, secondArrayNumber, thirdArrayNumber, fourthArrayNumber, fifthArrayNumber);
+
+      if(compareTwoArraysForFibonacciSequence(arrayToCheckForFibonacci, fiveFibonacciNumbers) === true)
+      {
+        removeFibonacciSequencesFromGrid(arrayToCheckForFibonacci);
+        return;
+      }
+      else
+      {
+        continue;
+      }
+    }
+  }
+
+
+/*
   function findFibonacciSequences(gridSequence)
   {
     for (let i = 0; i < fibonacciSequence.length; i++)
@@ -246,15 +318,15 @@ window.onload = function()
 
       fibonacciCache.push(firstFibonacciNumber, secondFibonacciNumber, thirdFibonacciNumber, fourthFibonacciNumber, fifthFibonacciNumber);
 
-      if(compareTwoArrays(gridSequence, fibonacciCache) === true)
+      if(compareTwoArraysForFibonacciSequence(gridSequence, fibonacciCache) === true)
       {
         removeFibonacciSequencesFromGrid(gridSequence);
         return;
       }
     }
   }
-
-  function compareTwoArrays(arrayOfObjects, arrayToBeCompared)
+*/
+  function compareTwoArraysForFibonacciSequence(arrayOfObjects, arrayToBeCompared)
   {
     let arrayToCompareTo = [];
 
