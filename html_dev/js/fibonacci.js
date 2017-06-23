@@ -24,7 +24,7 @@ window.onload = function()
 
   var numberOfRows = 50;
   var numberOfColumns = 50;
-  //var fibonacciSequence = fibonacciGenerator(50);
+
   var gridArray = [];
   var dynamicFibonacciSequence = [1, 1];
 
@@ -50,7 +50,6 @@ window.onload = function()
       this.divContainer.innerHTML = this.number;
     }
 
-
     addYellowColor()
     {
       this.divContainer.classList.add("grid-cell-color");
@@ -71,12 +70,11 @@ window.onload = function()
     array.push(newFibonacciNumber);
   }
 
-  function runFibGen(cellToCheck)
+  function expandFibonacciSequence(cellToCheck)
   {
     while(cellToCheck.number > dynamicFibonacciSequence[dynamicFibonacciSequence.length - 1])
     {
       dynamicFibonacciGenerator(dynamicFibonacciSequence);
-      console.log(dynamicFibonacciSequence);
     }
   }
 
@@ -105,7 +103,7 @@ window.onload = function()
 
   createGridOfTiles()
 
-  function whichCellWasClickedAndProcessIt(event)
+  function whichCellWasClickedAndProcessIt()
   {
     let e = window.event || event;
     let clickedCell = e.srcElement.id;
@@ -161,23 +159,10 @@ window.onload = function()
       },
       500);
     }
-    gridSequences();
+    horizontalAndVerticalNumberSequences();
   }
 
-  function fibonacciGenerator(fibonacciNumber)
-  {
-    let arrayOfFibonacci = [1, 1];
-
-    //i = 2 want arrayOfFibonacci heeft 1 en 1 al, hierdoor skipt ie het getal 0 in de reeks
-    for (let i = 2; i <= fibonacciNumber; i++)
-    {
-      var sumOfFibonacciNumbers = arrayOfFibonacci[i - 2] + arrayOfFibonacci[i - 1];
-      arrayOfFibonacci.push(sumOfFibonacciNumbers);
-    }
-    return arrayOfFibonacci;
-  }
-
-  function gridSequences()
+  function horizontalAndVerticalNumberSequences()
   {
     for (let i = 0; i < numberOfRows - 5; i++)
     {
@@ -213,7 +198,7 @@ window.onload = function()
 
     for (let i = 0; i < gridSequence.length; i++)
     {
-      runFibGen(gridSequence[i]);
+      expandFibonacciSequence(gridSequence[i]);
     }
 
     for (let i = 0; i < dynamicFibonacciSequence.length; i++)
@@ -230,7 +215,10 @@ window.onload = function()
 
       if(compareTwoArrays(gridSequence, fibonacciCache) === true)
       {
-        removeFibonacciSequencesFromGrid(gridSequence);
+        gridSequence.forEach(function(cell)
+        {
+          removeFibonacciSequencesFromGrid(cell)
+        });
         return;
       }
     }
@@ -253,20 +241,17 @@ window.onload = function()
     return arrayToCompareTo.join() === arrayToBeCompared.join();
   }
 
-  function removeFibonacciSequencesFromGrid(array)
+  function removeFibonacciSequencesFromGrid(cell)
   {
-    for (let i = 0; i < array.length; i++)
-    {
-      array[i].divContainer.classList.add("cell-fibonacci");
-      array[i].number = 0;
+    cell.divContainer.classList.add("cell-fibonacci");
+    cell.number = 0;
 
-      setTimeout(function ()
-      {
-        array[i].divContainer.classList.remove("cell-fibonacci");
-        array[i].divContainer.innerHTML = "";
-      },
-      1000);
-    }
+    setTimeout(function ()
+    {
+      cell.divContainer.classList.remove("cell-fibonacci");
+      cell.divContainer.innerHTML = "";
+    },
+    500);
   }
 
   function resetGrid()
