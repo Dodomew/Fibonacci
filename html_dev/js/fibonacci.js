@@ -97,16 +97,11 @@ window.onload = function()
     array.push(newFibonacciNumber);
   }
 
-  function expandFibonacciSequence(arrayOfFiveCells)
+  function expandFibonacciSequence(biggestNumberInArray)
   {
-    let lastIndex = arrayOfFiveCells[4].number;
-
-    if(lastIndex > dynamicFibonacciSequence[dynamicFibonacciSequence.length - 1])
+    while(biggestNumberInArray > dynamicFibonacciSequence[dynamicFibonacciSequence.length - 1])
     {
-      while(lastIndex > dynamicFibonacciSequence[dynamicFibonacciSequence.length - 1])
-      {
-        dynamicFibonacciGenerator(dynamicFibonacciSequence);
-      }
+      dynamicFibonacciGenerator(dynamicFibonacciSequence);
     }
   }
 
@@ -140,15 +135,17 @@ window.onload = function()
     let e = window.event || event;
     let clickedCell = e.srcElement.id;
 
-    let cell = findCellPositionInArray(clickedCell);
-
-    addOneToConnectedCells(cell[0], cell[1]);
+    if(clickedCell.includes("row") == true && clickedCell.includes("cell") == true)
+    {
+      let cell = findCellPositionInArray(clickedCell);
+      addOneToConnectedCells(cell[0], cell[1]);
+    }
   }
 
   function findCellPositionInArray(cellId)
   {
-    let regex = /\d{1,2}/g; // must change to 1,3 if rows and columns exceed 100
-    let stringNumbers = cellId.match(regex);
+    let regexFindNumbers = /\d{1,2}/g; // must change to 1,3 if rows and columns exceed 100
+    let stringNumbers = cellId.match(regexFindNumbers);
 
     let rowPosition = parseInt(stringNumbers[0]);
     let columnPosition = parseInt(stringNumbers[1]);
@@ -164,7 +161,7 @@ window.onload = function()
     {
       let cell = gridArray[i][columnNumber];
 
-      // skip already done in next for loop
+      // skip. already done in next for loop
       if(cell == gridArray[rowNumber][columnNumber])
       {
         continue;
@@ -186,12 +183,15 @@ window.onload = function()
 
   function horizontalAndVerticalNumberSequences()
   {
+    let gridSequenceHorizontal = [];
+    let gridSequenceVertical = [];
+
     for (let i = 0; i < numberOfRows; i++)
     {
       for (let j = 0; j < numberOfColumns; j++)
       {
-        let gridSequenceHorizontal = [];
-        let gridSequenceVertical = [];
+        gridSequenceHorizontal.length = 0;
+        gridSequenceVertical.length = 0;
 
         if(j + 4 < numberOfColumns)
         {
@@ -201,7 +201,12 @@ window.onload = function()
           let fourthNumberHorizontal = gridArray[i][j + 3];
           let fifthNumberHorizontal = gridArray[i][j + 4];
 
-          gridSequenceHorizontal.push(firstNumberHorizontal, secondNumberHorizontal, thirdNumberHorizontal, fourthNumberHorizontal, fifthNumberHorizontal);
+          gridSequenceHorizontal.push(firstNumberHorizontal,
+                                      secondNumberHorizontal,
+                                      thirdNumberHorizontal,
+                                      fourthNumberHorizontal,
+                                      fifthNumberHorizontal);
+
           findFibonacciSequences(gridSequenceHorizontal);
         }
 
@@ -213,7 +218,12 @@ window.onload = function()
           let fourthNumberVertical = gridArray[i + 3][j];
           let fifthNumberVertical = gridArray[i + 4][j];
 
-          gridSequenceVertical.push(firstNumberVertical, secondNumberVertical, thirdNumberVertical, fourthNumberVertical, fifthNumberVertical);
+          gridSequenceVertical.push(firstNumberVertical,
+                                    secondNumberVertical,
+                                    thirdNumberVertical,
+                                    fourthNumberVertical,
+                                    fifthNumberVertical);
+
           findFibonacciSequences(gridSequenceVertical);
         }
       }
@@ -222,21 +232,19 @@ window.onload = function()
 
   function findFibonacciSequences(gridSequence)
   {
+    expandFibonacciSequence(gridSequence[4].number);
+
     let fibonacciCache = [];
 
     for (let i = 0; i < dynamicFibonacciSequence.length; i++)
     {
-      fibonacciCache = [];
+      fibonacciCache.length = 0;
 
-      expandFibonacciSequence(gridSequence);
-
-      let firstFibonacciNumber = dynamicFibonacciSequence[i];
-      let secondFibonacciNumber = dynamicFibonacciSequence[i + 1];
-      let thirdFibonacciNumber = dynamicFibonacciSequence[i + 2];
-      let fourthFibonacciNumber = dynamicFibonacciSequence[i + 3];
-      let fifthFibonacciNumber = dynamicFibonacciSequence[i + 4];
-
-      fibonacciCache.push(firstFibonacciNumber, secondFibonacciNumber, thirdFibonacciNumber, fourthFibonacciNumber, fifthFibonacciNumber);
+      fibonacciCache.push(dynamicFibonacciSequence[i],
+                          dynamicFibonacciSequence[i + 1],
+                          dynamicFibonacciSequence[i + 2],
+                          dynamicFibonacciSequence[i + 3],
+                          dynamicFibonacciSequence[i + 4]);
 
       if(compareTwoArrays(gridSequence, fibonacciCache) === true)
       {
@@ -246,7 +254,7 @@ window.onload = function()
           cell.resetCell(cell);
         });
 
-        return;
+        break;
       }
     }
   }
