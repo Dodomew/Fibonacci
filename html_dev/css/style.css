@@ -5,39 +5,32 @@ body {
 }
 
 .grid-container {
-  width: auto;
+  width: 1700px;
   height: 100%;
   margin: auto;
-  padding: 0.25rem;
+  padding: 2px;
   background-color: #22253e;
+  overflow: auto;
 }
 
 .grid-row {
   width: 100%;
   height: auto;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-justify-content: space-around;
-  justify-content: space-around;
-  -webkit-align-items: center;
-  align-items: center;
 }
 
 .grid-cell {
-  width: 25px;
-  height: 25px;
+  width: 28px;
+  height: 28px;
   display: inline-block;
   background-color: #afafaf;
-  margin: 0.2rem;
-  padding: 0.2rem;
-  line-height: 25px;
+  margin: 3px;
+  vertical-align: top;
+  line-height: 28px;
   text-align: center;
   font-weight: bold;
   font-size: 1rem;
   transition: background-color 0.2s linear;
+  flex: 0 0 28px;
 }
 
 .grid-cell:hover {
@@ -53,7 +46,7 @@ body {
 }
 
 .header-container {
-  width: 90%;
+  width: 1700px;
   margin: auto;
   display: -webkit-box;
   display: -moz-box;

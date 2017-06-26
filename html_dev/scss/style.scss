@@ -13,8 +13,8 @@
 }
 
 // VARIABLES
-$cellWidth : 25px;
-$cellHeight : 25px;
+$contentSize : 1700px;
+$cellSize : 28px;
 $animationSpeed : 0.20s;
 
 $mainGreen : #499229;
@@ -31,38 +31,39 @@ body
 
 .grid-container
 {
-  width: auto;
+  width: $contentSize;
   height: 100%;
   margin: auto;
-  padding: 0.25rem;
+  padding: 2px;
 
   background-color: #22253e;
+  overflow: auto;
 }
 
 .grid-row
 {
   width: 100%;
   height: auto;
-
-  @include displayFlex(space-around, center);
 }
 
 
 .grid-cell
 {
-  width: $cellWidth;
-  height: $cellHeight;
+  width: $cellSize;
+  height: $cellSize;
   display: inline-block;
   background-color: #afafaf;
-  margin: 0.2rem;
-  padding: 0.2rem;
+  margin: 3px;
+  vertical-align: top;
 
-  line-height: $cellHeight;
+  line-height: $cellSize;
   text-align: center;
   font-weight: bold;
   font-size: 1rem;
 
   transition: background-color $animationSpeed linear;
+
+  flex: 0 0 $cellSize;
 }
 
 .grid-cell:hover
@@ -82,7 +83,7 @@ body
 
 .header-container
 {
-  width: 90%;
+  width: $contentSize;
   margin: auto;
 
   @include displayFlex(space-between, center);
