@@ -25,7 +25,7 @@ window.onload = function initializeGame()
   var rowAndCellsContainer = [];
   var fibonacciSequence = [1, 1];
 
-  var animationSpeedOfColorToggleAndReset = 250;
+  var animationSpeed = 300;
 
   class Cell
   {
@@ -49,54 +49,34 @@ window.onload = function initializeGame()
       this.divContainer.innerHTML = this.number;
     }
 
-    toggleColorYellow()
+    addColorYellow()
     {
-      let thisCell = this;
-      this.divContainer.classList.add("grid-cell-color");
-
-      setTimeout(function removeColorYellowClass()
-      {
-        thisCell.divContainer.classList.remove("grid-cell-color");
-      },
-      animationSpeedOfColorToggleAndReset);
+      this.divContainer.classList.add("grid-cell-yellow");
     }
 
-    toggleColorGreen()
+    removeColorYellow()
     {
-      let thisCell = this;
-      this.divContainer.classList.add("cell-fibonacci");
+      this.divContainer.classList.remove("grid-cell-yellow");
+    }
 
-      setTimeout(function removeColorGreenClass()
-      {
-        thisCell.divContainer.classList.remove("cell-fibonacci");
-      },
-      animationSpeedOfColorToggleAndReset);
+    addColorGreen()
+    {
+      this.divContainer.classList.add("grid-cell-green");
+    }
+
+    removeColorGreen()
+    {
+      this.divContainer.classList.remove("grid-cell-green");
     }
 
     resetCell()
     {
-      let thisCell = this;
       this.number = 0;
-
-      setTimeout(function resetCells()
-      {
-        thisCell.divContainer.innerHTML = "";
-      },
-      animationSpeedOfColorToggleAndReset);
-
+      this.divContainer.innerHTML = "";
     }
   }
 
   createGridOfRowsAndCells()
-
-  function dynamicFibonacciGenerator(fibonacciSequence)
-  {
-    let lastNumber = fibonacciSequence[fibonacciSequence.length - 1];
-    let secondLastNumber = fibonacciSequence[fibonacciSequence.length - 2];
-
-    let newFibonacciNumber = lastNumber + secondLastNumber;
-    fibonacciSequence.push(newFibonacciNumber);
-  }
 
   function expandFibonacciSequence(biggestNumberInGridSequence)
   {
@@ -133,10 +113,10 @@ window.onload = function initializeGame()
     }
   }
 
-  function clickEventHandler()
+  function clickEventHandler(event)
   {
     let e = window.event || event;
-    let clickedCell = e.srcElement.id;
+    let clickedCell = event.target.id || event.srcElement.id;
 
     if(clickedCell.includes("row") == true && clickedCell.includes("cell") == true)
     {
@@ -162,6 +142,8 @@ window.onload = function initializeGame()
 
   function addOneAndAddColorToConnectedCells(rowNumber, columnNumber)
   {
+    let connectedCells = [];
+
     for (let i = 0; i < numberOfRows; i++)
     {
       let cell = rowAndCellsContainer[i][columnNumber];
@@ -172,23 +154,35 @@ window.onload = function initializeGame()
         continue;
       }
 
-      cell.toggleColorYellow();
       cell.addOneToNumber();
+      cell.addColorYellow();
+      connectedCells.push(cell);
     }
 
     for (let j = 0; j < numberOfColumns; j++)
     {
       let cell = rowAndCellsContainer[rowNumber][j];
 
-      cell.toggleColorYellow();
       cell.addOneToNumber();
+      cell.addColorYellow();
+      connectedCells.push(cell);
     }
+
+    setTimeout(function colorConnectedCells()
+    {
+      for (let i = 0; i < connectedCells.length; i++)
+      {
+        connectedCells[i].removeColorYellow();
+      }
+    }, animationSpeed);
+
   }
 
   function findHorizontalAndVerticalSequences()
   {
     let horizontalSequence = [];
     let verticalSequence = [];
+    let sequenceOfAffectedCells = [];
 
     for (let i = 0; i < numberOfRows; i++)
     {
@@ -207,10 +201,11 @@ window.onload = function initializeGame()
 
           if(containsAFibonacciSequence(horizontalSequence) == true)
           {
+            sequenceOfAffectedCells.push.apply(sequenceOfAffectedCells, horizontalSequence);
+
             horizontalSequence.forEach(function(cell)
             {
-              cell.toggleColorGreen();
-              cell.resetCell();
+              cell.addColorGreen();
             });
           }
         }
@@ -225,15 +220,30 @@ window.onload = function initializeGame()
 
           if(containsAFibonacciSequence(verticalSequence) == true)
           {
+            // https://stackoverflow.com/questions/4156101/javascript-push-array-values-into-another-array
+            sequenceOfAffectedCells.push.apply(sequenceOfAffectedCells, verticalSequence);
+
             verticalSequence.forEach(function(cell)
             {
-              cell.toggleColorGreen();
-              cell.resetCell();
+              cell.addColorGreen();
             });
           }
         }
       }
     }
+
+    if(sequenceOfAffectedCells.length > 0)
+    {
+      setTimeout(function removeGreenFromCells()
+      {
+        for (let a = 0; a < sequenceOfAffectedCells.length; a++)
+        {
+          sequenceOfAffectedCells[a].removeColorGreen();
+          sequenceOfAffectedCells[a].resetCell();
+        }
+      }, animationSpeed);
+    }
+
   }
 
   function containsAFibonacciSequence(gridSequence)
